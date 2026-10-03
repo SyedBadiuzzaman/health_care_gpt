@@ -1,2 +1,5 @@
 /Keys
 /.env
+/.python-version
+/pyproject.toml
+/.venv
