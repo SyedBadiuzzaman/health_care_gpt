@@ -1,0 +1,17 @@
+[project]
+name = "doc-agent-dev-auth"
+version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "doc-agent-common",
+    "fastapi>=0.119,<1",
+    "pyjwt[crypto]>=2.10,<3",
+    "uvicorn[standard]>=0.35,<1",
+]
+
+[project.scripts]
+doc-agent-dev-auth = "doc_agent_dev_auth.run:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

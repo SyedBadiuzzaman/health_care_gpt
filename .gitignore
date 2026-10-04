@@ -1,5 +1,14 @@
 /Keys
 /.env
 /.python-version
-/pyproject.toml
 /.venv
+/data/
+__pycache__/
+.pytest_cache/
+/.pytest_tmp*/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+/models/
+dist/

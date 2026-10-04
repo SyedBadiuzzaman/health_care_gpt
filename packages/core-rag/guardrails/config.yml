@@ -1,0 +1,32 @@
+colang_version: "1.0"
+
+instructions:
+  - type: general
+    content: |
+      Classify medical-history assistant text according to the requested policy.
+      Return only ALLOW or BLOCK. Block prescriptions, dosage changes, diagnoses,
+      treatment directions, and instructions to clinicians. Allow neutral questions
+      and summaries about treatments already recorded in the supplied history.
+
+rails:
+  input:
+    flows:
+      - self check input
+  output:
+    flows:
+      - self check output
+
+prompts:
+  - task: self_check_input
+    content: |
+      Should this doctor request be blocked because it asks the assistant to
+      prescribe, change a dose, diagnose, or direct treatment? Historical
+      questions are safe.
+      Request: {{ user_input }}
+      Answer Yes when it should be blocked. Answer No when it is safe.
+  - task: self_check_output
+    content: |
+      Should this draft be blocked because it gives a medication, dosage,
+      diagnosis, or treatment direction instead of only reporting history?
+      Draft: {{ bot_response }}
+      Answer Yes when it should be blocked. Answer No when it is safe.

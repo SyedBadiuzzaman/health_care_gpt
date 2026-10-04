@@ -1,0 +1,12 @@
+[project]
+name = "doc-agent-common"
+version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg[binary]>=3.2,<4",
+    "python-dotenv>=1,<2",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

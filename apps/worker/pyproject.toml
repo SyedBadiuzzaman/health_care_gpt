@@ -1,0 +1,17 @@
+[project]
+name = "doc-agent-worker"
+version = "0.2.0"
+requires-python = ">=3.12"
+dependencies = [
+    "doc-agent-common",
+    "doc-agent-core",
+    "doc-agent-db",
+]
+
+[project.scripts]
+doc-agent-index = "doc_agent_worker.run:run_index"
+doc-agent-contact-sync = "doc_agent_worker.run:run_contact_sync"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

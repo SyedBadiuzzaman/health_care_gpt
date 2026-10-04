@@ -1,0 +1,19 @@
+{
+  "dense": {
+    "ndcg_at_5": 0.9259980229534504,
+    "precision_at_5": 0.79375,
+    "recall_at_5": 0.9244791666666666
+  },
+  "hybrid_mmr": {
+    "ndcg_at_5": 1.0,
+    "precision_at_5": 0.85,
+    "recall_at_5": 1.0
+  },
+  "keyword": {
+    "ndcg_at_5": 0.7227169145521948,
+    "precision_at_5": 0.61875,
+    "recall_at_5": 0.7270833333333333
+  },
+  "patient_isolation_percent": 100,
+  "question_count": 32
+}

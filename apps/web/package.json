@@ -1,0 +1,6 @@
+{
+  "name": "doc-agent-web",
+  "private": true,
+  "type": "module",
+  "description": "Dependency-free doctor patient-history interface"
+}

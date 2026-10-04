@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    env_file: .env
+    environment:
+      API_HOST: 0.0.0.0
+      API_PORT: "8000"
+      DEV_AUTH_ENABLED: "false"
+      SSH_KEY_PATH: /workspace/Keys/health.pem
+      SSH_KNOWN_HOSTS_PATH: /workspace/Keys/known_hosts
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Keys:/workspace/Keys:ro
+      - ./models:/workspace/models
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    env_file: .env
+    environment:
+      SSH_KEY_PATH: /workspace/Keys/health.pem
+      SSH_KNOWN_HOSTS_PATH: /workspace/Keys/known_hosts
+    volumes:
+      - ./Keys:/workspace/Keys:ro
+      - ./models:/workspace/models
+    profiles: ["worker"]

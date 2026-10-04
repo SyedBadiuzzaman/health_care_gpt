@@ -1,17 +1,45 @@
 [project]
-name = "doc-agent"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-authors = [
-    { name = "Syed Badi Uz Zaman", email = "syedbadi.shah66@gmail.com" }
-]
+name = "my-rag-platform"
+version = "0.2.0"
+description = "Patient-scoped medical history RAG workspace"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "doc-agent-api",
+    "doc-agent-dev-auth",
+    "doc-agent-worker",
+    "httpx>=0.28,<1",
+]
 
-[project.scripts]
-doc-agent = "doc_agent:main"
+[dependency-groups]
+dev = ["black", "mypy", "ruff"]
 
-[build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"
+[tool.uv.workspace]
+members = [
+    "apps/api",
+    "apps/dev-auth",
+    "apps/worker",
+    "packages/common",
+    "packages/core-rag",
+    "packages/db",
+]
+
+[tool.uv.sources]
+doc-agent-api = { workspace = true }
+doc-agent-common = { workspace = true }
+doc-agent-core = { workspace = true }
+doc-agent-db = { workspace = true }
+doc-agent-dev-auth = { workspace = true }
+doc-agent-worker = { workspace = true }
+
+[tool.mypy]
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["nemoguardrails", "nemoguardrails.*"]
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py312"
+
+[tool.black]
+target-version = ["py312"]

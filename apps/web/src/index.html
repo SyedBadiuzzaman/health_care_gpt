@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="theme-color" content="#f4f8f8">
+    <title>Patient History Assistant</title>
+    <link rel="stylesheet" href="/assets/styles.css">
+    <script type="module" src="/assets/app.js"></script>
+  </head>
+  <body>
+    <section id="development-access" class="development-access" hidden aria-labelledby="development-access-title">
+      <form id="development-access-form" class="development-access-card">
+        <p class="section-label">Local development only</p>
+        <h1 id="development-access-title">Local development access</h1>
+        <p class="development-access-copy">
+          Create a temporary doctor session for patient IDs you are authorized to test.
+          The token remains in this browser tab's memory.
+        </p>
+        <label class="development-field" for="development-doctor-id">
+          <span>Doctor ID</span>
+          <input id="development-doctor-id" value="doctor-local" maxlength="128" required>
+        </label>
+        <label class="development-field" for="development-patient-ids">
+          <span>Patient IDs</span>
+          <textarea
+            id="development-patient-ids"
+            rows="4"
+            maxlength="10000"
+            placeholder="patient-1, patient-2"
+            required
+          ></textarea>
+        </label>
+        <button id="development-access-submit" class="development-submit" type="submit">
+          Start local session
+        </button>
+        <p id="development-access-status" class="development-access-status" role="status"></p>
+      </form>
+    </section>
+    <div class="ambient-shape ambient-shape-one" aria-hidden="true"></div>
+    <div class="ambient-shape ambient-shape-two" aria-hidden="true"></div>
+
+    <main class="app-shell" aria-labelledby="page-title">
+      <aside class="patient-panel glass-surface" aria-label="Patient selection">
+        <div class="brand-row">
+          <span class="brand-mark" aria-hidden="true">H</span>
+          <div>
+            <p class="brand-name">History Assistant</p>
+            <p class="brand-note">Recorded clinical context</p>
+          </div>
+        </div>
+
+        <div class="doctor-greeting">
+          <p class="section-label">Welcome back</p>
+          <h1 id="page-title">Good day, Doctor</h1>
+          <p id="session-status" class="session-status" role="status">
+            Waiting for a secure session
+          </p>
+        </div>
+
+        <section class="patient-picker" aria-labelledby="patient-picker-title">
+          <div class="section-heading-row">
+            <div>
+              <p class="section-label">Patient directory</p>
+              <h2 id="patient-picker-title">Choose a patient</h2>
+            </div>
+            <button
+              id="wheel-toggle"
+              class="icon-button"
+              type="button"
+              aria-expanded="true"
+              aria-controls="wheel-region"
+              aria-label="Collapse patient picker"
+            >⌃</button>
+          </div>
+
+          <label class="search-field" for="patient-search">
+            <span class="search-symbol" aria-hidden="true">⌕</span>
+            <span class="visually-hidden">Search patient IDs</span>
+            <input
+              id="patient-search"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              placeholder="Search patient ID"
+              maxlength="128"
+              disabled
+            >
+          </label>
+
+          <div id="wheel-region" class="wheel-region">
+            <div class="wheel-frame">
+              <div class="wheel-focus-band" aria-hidden="true"></div>
+              <div
+                id="patient-wheel"
+                class="patient-wheel"
+                role="listbox"
+                aria-label="Authorized patients"
+                aria-describedby="wheel-help"
+                tabindex="0"
+              ></div>
+              <div class="wheel-fade wheel-fade-top" aria-hidden="true"></div>
+              <div class="wheel-fade wheel-fade-bottom" aria-hidden="true"></div>
+            </div>
+            <p id="wheel-help" class="wheel-help">
+              Scroll or use arrow keys. Press Enter to select.
+            </p>
+            <button id="load-more" class="text-button" type="button" hidden>
+              Load more patients
+            </button>
+          </div>
+          <p id="patient-live-region" class="visually-hidden" aria-live="polite"></p>
+        </section>
+
+        <div class="privacy-note">
+          <span class="privacy-icon" aria-hidden="true">✓</span>
+          <p>Access is limited to patients authorized in your current session.</p>
+        </div>
+      </aside>
+
+      <section class="chat-workspace" aria-label="Patient history chat">
+        <header class="workspace-header glass-surface">
+          <div class="selected-patient-heading">
+            <p class="section-label">Current patient</p>
+            <h2 id="selected-patient-title">No patient selected</h2>
+          </div>
+          <label class="admission-field" for="admission-select">
+            <span>Admission</span>
+            <select id="admission-select" disabled>
+              <option value="">All admissions</option>
+            </select>
+          </label>
+        </header>
+
+        <nav
+          id="patient-tabs"
+          class="patient-tabs"
+          aria-label="Open patient chats"
+          role="tablist"
+        ></nav>
+
+        <div id="chat-stage" class="chat-stage">
+          <section id="empty-state" class="empty-state" aria-labelledby="empty-title">
+            <div class="empty-symbol" aria-hidden="true">+</div>
+            <p class="section-label">Patient history</p>
+            <h2 id="empty-title">Select a patient to begin</h2>
+            <p>
+              Choose an authorized patient ID from the wheel to review recorded
+              history. Each patient has a separate temporary conversation.
+            </p>
+          </section>
+
+          <section id="conversation" class="conversation" hidden>
+            <div id="conversation-intro" class="conversation-intro">
+              <p class="section-label">Suggested questions</p>
+              <h2>What would you like to review?</h2>
+              <p>Ask about recorded history. The assistant will not recommend treatment.</p>
+              <div id="suggested-questions" class="suggestion-grid"></div>
+            </div>
+            <div
+              id="message-list"
+              class="message-list"
+              role="log"
+              aria-live="polite"
+              aria-relevant="additions"
+            ></div>
+          </section>
+        </div>
+
+        <form id="question-form" class="composer glass-surface">
+          <label class="visually-hidden" for="question-input">History question</label>
+          <textarea
+            id="question-input"
+            rows="1"
+            minlength="2"
+            maxlength="2000"
+            placeholder="Select a patient before asking a question"
+            disabled
+          ></textarea>
+          <button id="send-button" class="send-button" type="submit" disabled>
+            <span>Ask</span>
+            <span aria-hidden="true">↑</span>
+          </button>
+          <p class="composer-note">Historical summaries only. Verify details in the source record.</p>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
